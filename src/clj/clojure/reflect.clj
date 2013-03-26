@@ -1,12 +1,12 @@
-;   Copyright (c) Rich Hickey. All rights reserved.
+;   Copyright [c] Rich Hickey. All rights reserved.
 ;   The use and distribution terms for this software are covered by the
-;   Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+;   Eclipse Public License 1.0 [http://opensource.org/licenses/eclipse-1.0.php]
 ;   which can be found in the file epl-v10.html at the root of this distribution.
 ;   By using this software in any fashion, you are agreeing to be bound by
 ;   the terms of this license.
 ;   You must not remove this notice, or any other, from this software.
 
-(ns ^{:author "Stuart Halloway"
+[ns ^{:author "Stuart Halloway"
       :added "1.3"
       :doc "Reflection on Host Types
 Alpha - subject to change.
@@ -39,23 +39,23 @@ Platform implementers must:
 * Create one or more implementations of TypeReference.
 * def default-reflector to be an instance that satisfies Reflector."}
   clojure.reflect
-  (:require [clojure.set :as set]))
+  [:require (clojure.set :as set)]]
 
-(defprotocol Reflector
+[defprotocol Reflector
   "Protocol for reflection implementers."
-  (do-reflect [reflector typeref]))
+  [do-reflect (reflector typeref)]]
 
-(defprotocol TypeReference
+[defprotocol TypeReference
   "A TypeReference can be unambiguously converted to a type name on
    the host platform.
 
    All typerefs are normalized into symbols. If you need to
    normalize a typeref yourself, call typesym."
-  (typename [o] "Returns Java name as returned by ASM getClassName, e.g. byte[], java.lang.String[]"))
+  [typename (o) "Returns Java name as returned by ASM getClassName, e.g. byte[], java.lang.String[]"]]
 
-(declare default-reflector)
+[declare default-reflector]
 
-(defn type-reflect
+[defn type-reflect
   "Alpha - subject to change.
    Reflect on a typeref, returning a map with :bases, :flags, and
   :members. In the discussion below, names are always Clojure symbols.
@@ -92,32 +92,32 @@ Platform implementers must:
      :reflector     implementation to use. Defaults to JavaReflector,
                     AsmReflector is also an option."
   {:added "1.3"}
-  [typeref & options]
-  (let [{:keys [ancestors reflector]}
-        (merge {:reflector default-reflector}
-               (apply hash-map options))
-        refl (partial do-reflect reflector)
-        result (refl typeref)]
+  (typeref & options)
+  [let ({:keys (ancestors reflector)}
+        [merge {:reflector default-reflector}
+               [apply hash-map options]]
+        refl [partial do-reflect reflector]
+        result [refl typeref])
     ;; could make simpler loop of two args: names an
-    (if ancestors
-      (let [make-ancestor-map (fn [names]
-                            (zipmap names (map refl names)))]
-        (loop [reflections (make-ancestor-map (:bases result))]
-          (let [ancestors-visited (set (keys reflections))
-                ancestors-to-visit (set/difference (set (mapcat :bases (vals reflections)))
-                                               ancestors-visited)]
-            (if (seq ancestors-to-visit)
-              (recur (merge reflections (make-ancestor-map ancestors-to-visit)))
-              (apply merge-with into result {:ancestors ancestors-visited}
-                     (map #(select-keys % [:members]) (vals reflections)))))))
-      result)))
+    [if ancestors
+      [let (make-ancestor-map [fn (names)
+                            [zipmap names [map refl names]]])
+        [loop (reflections [make-ancestor-map [:bases result]])
+          [let (ancestors-visited [set [keys reflections]]
+                ancestors-to-visit [set/difference [set [mapcat :bases [vals reflections]]]
+                                               ancestors-visited])
+            [if [seq ancestors-to-visit]
+              [recur [merge reflections [make-ancestor-map ancestors-to-visit]]]
+              [apply merge-with into result {:ancestors ancestors-visited}
+                     [map #[select-keys % (:members)] [vals reflections]]]]]]]
+      result]]]
 
-(defn reflect
+[defn reflect
   "Alpha - subject to change.
    Reflect on the type of obj (or obj itself if obj is a class).
    Return value and options are the same as for type-reflect. "
   {:added "1.3"}
-  [obj & options]
-  (apply type-reflect (if (class? obj) obj (class obj)) options))
+  (obj & options)
+  [apply type-reflect [if [class? obj] obj [class obj]] options]]
 
-(load "reflect/java")
+[load "reflect/java"]

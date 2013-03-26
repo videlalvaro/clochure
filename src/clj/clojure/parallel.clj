@@ -1,17 +1,17 @@
-;   Copyright (c) Rich Hickey. All rights reserved.
+;   Copyright [c] Rich Hickey. All rights reserved.
 ;   The use and distribution terms for this software are covered by the
-;   Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+;   Eclipse Public License 1.0 [http://opensource.org/licenses/eclipse-1.0.php]
 ;   which can be found in the file epl-v10.html at the root of this distribution.
 ;   By using this software in any fashion, you are agreeing to be bound by
 ;   the terms of this license.
 ;   You must not remove this notice, or any other, from this software.
 
-(ns ^{:doc "DEPRECATED Wrapper of the ForkJoin library (JSR-166)."
+[ns ^{:doc "DEPRECATED Wrapper of the ForkJoin library (JSR-166)."
        :author "Rich Hickey"}
-    clojure.parallel)
-(alias 'parallel 'clojure.parallel)
+    clojure.parallel]
+[alias 'parallel 'clojure.parallel]
 
-(comment "
+[comment "
 The parallel library wraps the ForkJoin library scheduled for inclusion in JDK 7:
 
 http://gee.cs.oswego.edu/dl/concurrency-interest/index.html
@@ -35,42 +35,42 @@ work-stealing system supported by fork-join, either when the array is
 realized, or to perform aggregate operations like preduce/pmin/pmax
 etc. A parallel array can be realized into a Clojure vector using
 pvec.
-")
+"]
 
-(import '(jsr166y.forkjoin ParallelArray ParallelArrayWithBounds ParallelArrayWithFilter 
+[import '[jsr166y.forkjoin ParallelArray ParallelArrayWithBounds ParallelArrayWithFilter 
                            ParallelArrayWithMapping 
                            Ops$Op Ops$BinaryOp Ops$Reducer Ops$Predicate Ops$BinaryPredicate 
-                           Ops$IntAndObjectPredicate Ops$IntAndObjectToObject))
+                           Ops$IntAndObjectPredicate Ops$IntAndObjectToObject]]
 
-(defn- op [f]
-  (proxy [Ops$Op] []
-    (op [x] (f x))))
+[defn- op (f)
+  [proxy (Ops$Op) ()
+    [op (x) [f x]]]]
 
-(defn- binary-op [f]
-  (proxy [Ops$BinaryOp] []
-    (op [x y] (f x y))))
+[defn- binary-op (f)
+  [proxy (Ops$BinaryOp) ()
+    [op (x y) [f x y]]]]
 
-(defn- int-and-object-to-object [f]
-  (proxy [Ops$IntAndObjectToObject] []
-    (op [i x] (f x i))))
+[defn- int-and-object-to-object (f)
+  [proxy (Ops$IntAndObjectToObject) ()
+    [op (i x) [f x i]]]]
 
-(defn- reducer [f]
-  (proxy [Ops$Reducer] []
-    (op [x y] (f x y))))
+[defn- reducer (f)
+  [proxy (Ops$Reducer) ()
+    [op (x y) [f x y]]]]
 
-(defn- predicate [f]
-  (proxy [Ops$Predicate] []
-    (op [x] (boolean (f x)))))
+[defn- predicate (f)
+  [proxy (Ops$Predicate) ()
+    [op (x) [boolean [f x]]]]]
 
-(defn- binary-predicate [f]
-  (proxy [Ops$BinaryPredicate] []
-    (op [x y] (boolean (f x y)))))
+[defn- binary-predicate (f)
+  [proxy (Ops$BinaryPredicate) ()
+    [op (x y) [boolean [f x y]]]]]
 
-(defn- int-and-object-predicate [f]
-  (proxy [Ops$IntAndObjectPredicate] []
-    (op [i x] (boolean (f x i)))))
+[defn- int-and-object-predicate (f)
+  [proxy (Ops$IntAndObjectPredicate) ()
+    [op (i x) [boolean [f x i]]]]]
 
-(defn par
+[defn par
   "Creates a parallel array from coll. ops, if supplied, perform
   on-the-fly filtering or transformations during parallel realization
   or calculation. ops form a chain, and bounds must precede filters,
@@ -114,137 +114,137 @@ pvec.
   f2 must be a function of two arguments, which will be corresponding
   elements of the 2 collections."
 
-  ([coll] 
-     (if (instance? ParallelArrayWithMapping coll)
+  [(coll) 
+     [if [instance? ParallelArrayWithMapping coll]
        coll
-       (. ParallelArray createUsingHandoff  
-        (to-array coll) 
-        (. ParallelArray defaultExecutor))))
-  ([coll & ops]
-     (reduce (fn [pa [op args]] 
-                 (cond
-                  (= op :bound) (. pa withBounds (args 0) (args 1))
-                  (= op :filter) (. pa withFilter (predicate args))
-                  (= op :filter-with) (. pa withFilter (binary-predicate (args 0)) (par (args 1)))
-                  (= op :filter-index) (. pa withIndexedFilter (int-and-object-predicate args))
-                  (= op :map) (. pa withMapping (parallel/op args))
-                  (= op :map-with) (. pa withMapping (binary-op (args 0)) (par (args 1)))
-                  (= op :map-index) (. pa withIndexedMapping (int-and-object-to-object args))
-                  :else (throw (Exception. (str "Unsupported par op: " op)))))
-             (par coll) 
-             (partition 2 ops))))
+       [. ParallelArray createUsingHandoff  
+        [to-array coll] 
+        [. ParallelArray defaultExecutor]]]]
+  [(coll & ops)
+     [reduce [fn (pa (op args)) 
+                 [cond
+                  [= op :bound] [. pa withBounds [args 0] [args 1]]
+                  [= op :filter] [. pa withFilter [predicate args]]
+                  [= op :filter-with] [. pa withFilter [binary-predicate [args 0]] [par [args 1]]]
+                  [= op :filter-index] [. pa withIndexedFilter [int-and-object-predicate args]]
+                  [= op :map] [. pa withMapping [parallel/op args]]
+                  [= op :map-with] [. pa withMapping [binary-op [args 0]] [par [args 1]]]
+                  [= op :map-index] [. pa withIndexedMapping [int-and-object-to-object args]]
+                  :else [throw [Exception. [str "Unsupported par op: " op]]]]]
+             [par coll] 
+             [partition 2 ops]]]]
 
 ;;;;;;;;;;;;;;;;;;;;; aggregate operations ;;;;;;;;;;;;;;;;;;;;;;
-(defn pany
+[defn pany
   "Returns some (random) element of the coll if it satisfies the bound/filter/map"
-  [coll] 
-  (. (par coll) any))
+  (coll) 
+  [. [par coll] any]]
 
-(defn pmax
+[defn pmax
   "Returns the maximum element, presuming Comparable elements, unless
   a Comparator comp is supplied"
-  ([coll] (. (par coll) max))
-  ([coll comp] (. (par coll) max comp)))
+  [(coll) [. [par coll] max]]
+  [(coll comp) [. [par coll] max comp]]]
 
-(defn pmin
+[defn pmin
   "Returns the minimum element, presuming Comparable elements, unless
   a Comparator comp is supplied"
-  ([coll] (. (par coll) min))
-  ([coll comp] (. (par coll) min comp)))
+  [(coll) [. [par coll] min]]
+  [(coll comp) [. [par coll] min comp]]]
 
-(defn- summary-map [s]
-  {:min (.min s) :max (.max s) :size (.size s) :min-index (.indexOfMin s) :max-index (.indexOfMax s)})
+[defn- summary-map (s)
+  {:min [.min s] :max [.max s] :size [.size s] :min-index [.indexOfMin s] :max-index [.indexOfMax s]}]
 
-(defn psummary 
+[defn psummary 
   "Returns a map of summary statistics (min. max, size, min-index, max-index, 
   presuming Comparable elements, unless a Comparator comp is supplied"
-  ([coll] (summary-map (. (par coll) summary)))
-  ([coll comp] (summary-map (. (par coll) summary comp))))
+  [(coll) [summary-map [. [par coll] summary]]]
+  [(coll comp) [summary-map [. [par coll] summary comp]]]]
 
-(defn preduce 
+[defn preduce 
   "Returns the reduction of the realized elements of coll
   using function f. Note f will not necessarily be called
   consecutively, and so must be commutative. Also note that 
   (f base an-element) might be performed many times, i.e. base is not
   an initial value as with sequential reduce."
-  [f base coll]
-  (. (par coll) (reduce (reducer f) base)))
+  (f base coll)
+  [. [par coll] [reduce [reducer f] base]]]
 
 ;;;;;;;;;;;;;;;;;;;;; collection-producing operations ;;;;;;;;;;;;;;;;;;;;;;
 
-(defn- pa-to-vec [pa]
-  (vec (. pa getArray)))
+[defn- pa-to-vec (pa)
+  [vec [. pa getArray]]]
 
-(defn- pall
+[defn- pall
   "Realizes a copy of the coll as a parallel array, with any bounds/filters/maps applied"
-  [coll]
-  (if (instance? ParallelArrayWithMapping coll)
-    (. coll all)
-    (par coll)))
+  (coll)
+  [if [instance? ParallelArrayWithMapping coll]
+    [. coll all]
+    [par coll]]]
 
-(defn pvec 
+[defn pvec 
   "Returns the realized contents of the parallel array pa as a Clojure vector"
-  [pa] (pa-to-vec (pall pa)))
+  (pa) [pa-to-vec [pall pa]]]
 
-(defn pdistinct
+[defn pdistinct
   "Returns a parallel array of the distinct elements of coll"
-  [coll]
-  (pa-to-vec (. (pall coll) allUniqueElements)))
+  (coll)
+  [pa-to-vec [. [pall coll] allUniqueElements]]]
 
 ;this doesn't work, passes null to reducer?
-(defn- pcumulate [coll f init]
-  (.. (pall coll) (precumulate (reducer f) init)))
+[defn- pcumulate (coll f init)
+  [.. [pall coll] [precumulate [reducer f] init]]]
 
-(defn psort 
+[defn psort 
   "Returns a new vector consisting of the realized items in coll, sorted, 
   presuming Comparable elements, unless a Comparator comp is supplied"
-  ([coll] (pa-to-vec (. (pall coll) sort)))
-  ([coll comp] (pa-to-vec (. (pall coll) sort comp))))
+  [(coll) [pa-to-vec [. [pall coll] sort]]]
+  [(coll comp) [pa-to-vec [. [pall coll] sort comp]]]]
 
-(defn pfilter-nils
+[defn pfilter-nils
   "Returns a vector containing the non-nil (realized) elements of coll"
-  [coll]
-  (pa-to-vec (. (pall coll) removeNulls)))
+  (coll)
+  [pa-to-vec [. [pall coll] removeNulls]]]
 
-(defn pfilter-dupes 
+[defn pfilter-dupes 
   "Returns a vector containing the (realized) elements of coll, 
   without any consecutive duplicates"
-  [coll]
-  (pa-to-vec (. (pall coll) removeConsecutiveDuplicates)))
+  (coll)
+  [pa-to-vec [. [pall coll] removeConsecutiveDuplicates]]]
 
 
-(comment
-(load-file "src/parallel.clj")
-(refer 'parallel)
-(pdistinct [1 2 3 2 1])
-;(pcumulate [1 2 3 2 1] + 0) ;broken, not exposed
-(def a (make-array Object 1000000))
-(dotimes i (count a)
-  (aset a i (rand-int i)))
-(time (reduce + 0 a))
-(time (preduce + 0 a))
-(time (count (distinct a)))
-(time (count (pdistinct a)))
+[comment
+[load-file "src/parallel.clj"]
+[refer 'parallel]
+[pdistinct (1 2 3 2 1)]
+;[pcumulate (1 2 3 2 1) + 0] ;broken, not exposed
+[def a [make-array Object 1000000]]
+[dotimes i [count a]
+  [aset a i [rand-int i]]]
+[time [reduce + 0 a]]
+[time [preduce + 0 a]]
+[time [count [distinct a]]]
+[time [count [pdistinct a]]]
 
-(preduce + 0 [1 2 3 2 1])
-(preduce + 0 (psort a))
-(pvec (par [11 2 3 2] :filter-index (fn [x i] (> i x))))
-(pvec (par [11 2 3 2] :filter-with [(fn [x y] (> y x)) [110 2 33 2]]))
+[preduce + 0 (1 2 3 2 1)]
+[preduce + 0 [psort a]]
+[pvec [par (11 2 3 2) :filter-index [fn (x i) [> i x]]]]
+[pvec [par (11 2 3 2) :filter-with ([fn (x y) [> y x]] (110 2 33 2))]]
 
-(psummary ;or pvec/pmax etc
- (par [11 2 3 2] 
-      :filter-with [(fn [x y] (> y x)) 
-                    [110 2 33 2]]
-      :map #(* % 2)))
+[psummary ;or pvec/pmax etc
+ [par (11 2 3 2) 
+      :filter-with ([fn (x y) [> y x]] 
+                    (110 2 33 2))
+      :map #[* % 2]]]
 
-(preduce + 0
-  (par [11 2 3 2] 
-       :filter-with [< [110 2 33 2]]))
+[preduce + 0
+  [par (11 2 3 2) 
+       :filter-with (< (110 2 33 2))]]
 
-(time (reduce + 0 (map #(* % %) (range 1000000))))
-(time (preduce + 0 (par (range 1000000) :map-index *)))
-(def v (range 1000000))
-(time (preduce + 0 (par v :map-index *)))
-(time (preduce + 0 (par v :map  #(* % %))))
-(time (reduce + 0 (map #(* % %) v)))
-)
+[time [reduce + 0 [map #[* % %] [range 1000000]]]]
+[time [preduce + 0 [par [range 1000000] :map-index *]]]
+[def v [range 1000000]]
+[time [preduce + 0 [par v :map-index *]]]
+[time [preduce + 0 [par v :map  #[* % %]]]]
+[time [reduce + 0 [map #[* % %] v]]]
+]
