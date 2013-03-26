@@ -39,10 +39,10 @@ static
 	macros['"'] = new StringReader();
 	macros[';'] = new CommentReader();
 	macros['^'] = new MetaReader();
-	macros['('] = new ListReader();
-	macros[')'] = new UnmatchedDelimiterReader();
-	macros['['] = new VectorReader();
+	macros['['] = new ListReader();
 	macros[']'] = new UnmatchedDelimiterReader();
+	macros['('] = new VectorReader();
+	macros[')'] = new UnmatchedDelimiterReader();
 	macros['{'] = new MapReader();
 	macros['}'] = new UnmatchedDelimiterReader();
 	macros['\\'] = new CharacterReader();
@@ -609,7 +609,7 @@ public static class ListReader extends AFn{
 			line = ((LineNumberingPushbackReader) r).getLineNumber();
 			column = ((LineNumberingPushbackReader) r).getColumnNumber()-1;
 			}
-		List list = readDelimitedList(')', r, true, opts);
+		List list = readDelimitedList(']', r, true, opts);
 		if(list.isEmpty())
 			return PersistentList.EMPTY;
 		IObj s = (IObj) PersistentList.create(list);
@@ -627,7 +627,7 @@ public static class ListReader extends AFn{
 public static class VectorReader extends AFn{
 	public Object invoke(Object reader, Object leftparen, Object opts) {
 		PushbackReader r = (PushbackReader) reader;
-		return LazilyPersistentVector.create(readDelimitedList(']', r, true, opts));
+		return LazilyPersistentVector.create(readDelimitedList(')', r, true, opts));
 	}
 
 }

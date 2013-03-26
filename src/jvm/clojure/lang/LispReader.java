@@ -89,10 +89,10 @@ static
 	macros['^'] = new MetaReader();
 	macros['`'] = new SyntaxQuoteReader();
 	macros['~'] = new UnquoteReader();
-	macros['('] = new ListReader();
-	macros[')'] = new UnmatchedDelimiterReader();
-	macros['['] = new VectorReader();
+	macros['['] = new ListReader();
 	macros[']'] = new UnmatchedDelimiterReader();
+	macros['('] = new VectorReader();
+	macros[')'] = new UnmatchedDelimiterReader();
 	macros['{'] = new MapReader();
 	macros['}'] = new UnmatchedDelimiterReader();
 //	macros['|'] = new ArgVectorReader();
@@ -104,7 +104,7 @@ static
 	dispatchMacros['^'] = new MetaReader();
 	dispatchMacros['\''] = new VarReader();
 	dispatchMacros['"'] = new RegexReader();
-	dispatchMacros['('] = new FnReader();
+	dispatchMacros['['] = new FnReader();
 	dispatchMacros['{'] = new SetReader();
 	dispatchMacros['='] = new EvalReader();
 	dispatchMacros['!'] = new CommentReader();
@@ -635,12 +635,12 @@ public static class FnReader extends AFn{
 	public Object invoke(Object reader, Object lparen) {
 		PushbackReader r = (PushbackReader) reader;
 		if(ARG_ENV.deref() != null)
-			throw new IllegalStateException("Nested #()s are not allowed");
+			throw new IllegalStateException("Nested #[]s are not allowed");
 		try
 			{
 			Var.pushThreadBindings(
 					RT.map(ARG_ENV, PersistentTreeMap.EMPTY));
-			unread(r, '(');
+			unread(r, '[');
 			Object form = read(r, true, null, true);
 
 			PersistentVector args = PersistentVector.EMPTY;
@@ -979,7 +979,7 @@ public static class ListReader extends AFn{
 			line = ((LineNumberingPushbackReader) r).getLineNumber();
 			column = ((LineNumberingPushbackReader) r).getColumnNumber()-1;
 			}
-		List list = readDelimitedList(')', r, true);
+		List list = readDelimitedList(']', r, true);
 		if(list.isEmpty())
 			return PersistentList.EMPTY;
 		IObj s = (IObj) PersistentList.create(list);
@@ -1080,7 +1080,7 @@ public static class EvalReader extends AFn{
 public static class VectorReader extends AFn{
 	public Object invoke(Object reader, Object leftparen) {
 		PushbackReader r = (PushbackReader) reader;
-		return LazilyPersistentVector.create(readDelimitedList(']', r, true));
+		return LazilyPersistentVector.create(readDelimitedList(')', r, true));
 	}
 
 }
@@ -1218,8 +1218,8 @@ public static class CtorReader extends AFn{
 			endch = '}';
 			shortForm = false;
 			}
-		else if (ch == '[')
-			endch = ']';
+		else if (ch == '(')
+			endch = ')';
 		else
 			throw Util.runtimeException("Unreadable constructor form starting with \"#" + recordName + (char) ch + "\"");
 
