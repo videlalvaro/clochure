@@ -1,6 +1,6 @@
-;   Copyright (c) Rich Hickey. All rights reserved.
+;   Copyright [c] Rich Hickey. All rights reserved.
 ;   The use and distribution terms for this software are covered by the
-;   Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+;   Eclipse Public License 1.0 [http://opensource.org/licenses/eclipse-1.0.php]
 ;   which can be found in the file epl-v10.html at the root of this distribution.
 ;   By using this software in any fashion, you are agreeing to be bound by
 ;   the terms of this license.
@@ -11,28 +11,28 @@
 ;;
 ;;  Created 1/28/2009
 
-(ns clojure.test-clojure.predicates
-  (:use clojure.test))
+[ns clojure.test-clojure.predicates
+  [:use clojure.test]]
 
 
 ;; *** Type predicates ***
 
-(def myvar 42)
+[def myvar 42]
 
-(def sample-data {
+[def sample-data {
   :nil nil
 
   :bool-true true
   :bool-false false
 
-  :byte   (byte 7)
-  :short  (short 7)
-  :int    (int 7)
-  :long   (long 7)
-  :bigint (bigint 7)
-  :float  (float 7)
-  :double (double 7)
-  :bigdec (bigdec 7)
+  :byte   [byte 7]
+  :short  [short 7]
+  :int    [int 7]
+  :long   [long 7]
+  :bigint [bigint 7]
+  :float  [float 7]
+  :double [double 7]
+  :bigdec [bigdec 7]
 
   :ratio 2/3
 
@@ -42,101 +42,101 @@
 
   :empty-string ""
   :empty-regex #""
-  :empty-list ()
-  :empty-lazy-seq (lazy-seq nil)
-  :empty-vector []
+  :empty-list []
+  :empty-lazy-seq [lazy-seq nil]
+  :empty-vector ()
   :empty-map {}
   :empty-set #{}
-  :empty-array (into-array [])
+  :empty-array [into-array ()]
 
   :string "abc"
   :regex #"a*b"
-  :list '(1 2 3)
-  :lazy-seq (lazy-seq [1 2 3])
-  :vector [1 2 3]
+  :list '[1 2 3]
+  :lazy-seq [lazy-seq (1 2 3)]
+  :vector (1 2 3)
   :map {:a 1 :b 2 :c 3}
   :set #{1 2 3}
-  :array (into-array [1 2 3])
+  :array [into-array (1 2 3)]
 
-  :fn (fn [x] (* 2 x))
+  :fn [fn (x) [* 2 x]]
 
   :class java.util.Date
-  :object (new java.util.Date)
+  :object [new java.util.Date]
 
-  :var (var myvar)
-  :delay (delay (+ 1 2))
-})
+  :var [var myvar]
+  :delay [delay [+ 1 2]]
+}]
 
 
-(def type-preds {
-  nil? [:nil]
+[def type-preds {
+  nil? (:nil)
 
-  true?  [:bool-true]
-  false? [:bool-false]
+  true?  (:bool-true)
+  false? (:bool-false)
   ; boolean?
 
-  integer?  [:byte :short :int :long :bigint]
-  float?    [:float :double]
-  decimal?  [:bigdec]
-  ratio?    [:ratio]
-  rational? [:byte :short :int :long :bigint :ratio :bigdec]
-  number?   [:byte :short :int :long :bigint :ratio :bigdec :float :double]
+  integer?  (:byte :short :int :long :bigint)
+  float?    (:float :double)
+  decimal?  (:bigdec)
+  ratio?    (:ratio)
+  rational? (:byte :short :int :long :bigint :ratio :bigdec)
+  number?   (:byte :short :int :long :bigint :ratio :bigdec :float :double)
 
   ; character?
-  symbol?  [:symbol]
-  keyword? [:keyword]
+  symbol?  (:symbol)
+  keyword? (:keyword)
 
-  string? [:empty-string :string]
+  string? (:empty-string :string)
   ; regex?
 
-  list?   [:empty-list   :list]
-  vector? [:empty-vector :vector]
-  map?    [:empty-map    :map]
-  set?    [:empty-set    :set]
+  list?   (:empty-list   :list)
+  vector? (:empty-vector :vector)
+  map?    (:empty-map    :map)
+  set?    (:empty-set    :set)
 
-  coll? [:empty-list     :list
+  coll? (:empty-list     :list
          :empty-lazy-seq :lazy-seq
          :empty-vector   :vector
          :empty-map      :map
-         :empty-set      :set]
+         :empty-set      :set)
 
-  seq?  [:empty-list     :list
-         :empty-lazy-seq :lazy-seq]
+  seq?  (:empty-list     :list
+         :empty-lazy-seq :lazy-seq)
   ; array?
 
-  fn?  [:fn]
-  ifn? [:fn
+  fn?  (:fn)
+  ifn? (:fn
         :empty-vector :vector :empty-map :map :empty-set :set
-        :keyword :symbol :var]
+        :keyword :symbol :var)
 
-  class? [:class]
-  var?   [:var]
-  delay? [:delay]
-})
+  class? (:class)
+  var?   (:var)
+  delay? (:delay)
+}]
 
 
 ;; Test all type predicates against all data types
 ;;
-(defn- get-fn-name [f]
-  (str
-    (apply str (nthnext (first (.split (str f) "_"))
-                        (count "clojure.core$")))
-    "?"))
+[defn- get-fn-name (f)
+  [str
+    [apply str [nthnext [first [.split [str f] "_"]]
+                        [count "clojure.core$"]]]
+    "?"]]
 
-(deftest test-type-preds
-  (doseq [tp type-preds]
-    (doseq [dt sample-data]
-      (if (some #(= % (first dt)) (second tp))
-        (is ((first tp) (second dt))
-          (pr-str (list (get-fn-name (first tp)) (second dt))))
-        (is (not ((first tp) (second dt)))
-          (pr-str (list 'not (list (get-fn-name (first tp)) (second dt)))))))))
+[deftest test-type-preds
+  [doseq (tp type-preds)
+    [doseq (dt sample-data)
+      [if [some #[= % [first dt]] [second tp]]
+        [is [[first tp] [second dt]]
+          [pr-str [list [get-fn-name [first tp]] [second dt]]]]
+        [is [not [[first tp] [second dt]]]
+          [pr-str [list 'not [list [get-fn-name [first tp]] [second dt]]]]]]]]]
 
 
 ;; Additional tests:
 ;; http://groups.google.com/group/clojure/browse_thread/thread/537761a06edb4b06/bfd4f0705b746a38
 ;;
-(deftest test-string?-more
-  (are [x] (not (string? x))
-    (new java.lang.StringBuilder "abc")
-    (new java.lang.StringBuffer "xyz")))
+[deftest test-string?-more
+  [are (x) [not [string? x]]
+    [new java.lang.StringBuilder "abc"]
+    [new java.lang.StringBuffer "xyz"]]]

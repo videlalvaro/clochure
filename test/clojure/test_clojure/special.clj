@@ -1,6 +1,6 @@
-;   Copyright (c) Rich Hickey. All rights reserved.
+;   Copyright [c] Rich Hickey. All rights reserved.
 ;   The use and distribution terms for this software are covered by the
-;   Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+;   Eclipse Public License 1.0 [http://opensource.org/licenses/eclipse-1.0.php]
 ;   which can be found in the file epl-v10.html at the root of this distribution.
 ;   By using this software in any fashion, you are agreeing to be bound by
 ;   the terms of this license.
@@ -12,8 +12,8 @@
 ;;  Test special forms, macros and metadata
 ;;
 
-(ns clojure.test-clojure.special
-  (:use clojure.test))
+[ns clojure.test-clojure.special
+  [:use clojure.test]]
 
 ; http://clojure.org/special_forms
 
@@ -22,12 +22,12 @@
 ; var
 ; fn
 
-(deftest multiple-keys-in-destructuring
-  (let [foo (fn [& {:keys [x]}] x)
-        bar (fn [& options] (apply foo :x :b options))]
-    (is (= (bar) :b))
-    (is (= (bar :x :a) :a))))
+[deftest multiple-keys-in-destructuring
+  [let (foo [fn (& {:keys (x)}) x]
+        bar [fn (& options) [apply foo :x :b options]])
+    [is [= [bar] :b]]
+    [is [= [bar :x :a] :a]]]]
 
-(deftest empty-list-with-:as-destructuring
-  (let [{:as x} '()]
-    (is (= {} x))))
+[deftest empty-list-with-:as-destructuring
+  [let ({:as x} '[])
+    [is [= {} x]]]]
