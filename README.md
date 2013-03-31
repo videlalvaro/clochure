@@ -42,9 +42,11 @@ Since we haven't ported Clojure tests to Clochure you need to skip them for the 
 
 ## Running Clochure ##
 
-To run Clochure type
+To run Clochure type:
 
+```bash
 java -cp clochure.jar clojure.main
+```
 
 ## How can I port my Clojure code to Clochure?
 
