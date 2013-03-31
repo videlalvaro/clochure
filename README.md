@@ -82,7 +82,7 @@ And that’s pretty much how Clochure came to life.
 ## Credits ##
 
 - Idea [@old_sound](https://twitter.com/old_sound/)
-- [clochure.org](http://clochure.org) design [@vdrnn](https://twitter.com/old_sound/)
+- [clochure.org](http://clochure.org) design [@vdrnn](https://twitter.com/vdrnn/)
 
 
 For the original Clojure credits see readme.md
