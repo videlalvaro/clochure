@@ -1,6 +1,6 @@
 # Clochure - A Better Clojure #
 
-Clochure is an educated attempt to solve Clojure's number one problem and first obstacle that puts away newcomers: **parentheses**.
+[Clochure](http://clochure.org) is an educated attempt to solve Clojure's number one problem and first obstacle that puts away newcomers: **parentheses**.
 
 We've found an elegant and practical solution to the problem: interchange parentheses with square brackets. Why?
 
@@ -96,4 +96,4 @@ And that’s pretty much how Clochure came to life.
 - Idea [@old_sound](https://twitter.com/old_sound/)
 - [clochure.org](http://clochure.org) design and logo by [@vdrnn](https://twitter.com/vdrnn/)
 
-For the original Clojure credits see readme.md
+For the original Clojure credits see readme.txt
