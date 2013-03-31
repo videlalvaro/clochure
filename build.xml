@@ -25,7 +25,7 @@
   <property name="version.properties" value="${build}/clojure/version.properties"/>
 
   <property name="clojure_jar" location="clojure-${clojure.version.label}.jar"/>
-  <property name="clojure_noversion_jar" location="clojure.jar"/>
+  <property name="clojure_noversion_jar" location="clochure.jar"/>
 
   <target name="init" depends="clean">
     <tstamp/>
