@@ -77,17 +77,17 @@ It should be pronounced as in French: clo-chure.
 
 Usability is very important for a new programming language, and lets face it, Clojure usability and friendliness to newcomers is very bad. All those parentheses really hurt Clojure reputation. So one the eve of **April 1st** we sat down in a brainstorm session with a team of PLT experts. Ideas starting flying around:
 
-–We need monads –said one.
-–No, –said another one–, I think logic programming is what we actually need.
-–Actually we need a Clojure2Scala compiler –said a third.
+- We need monads –said one.
+- No, –said another one–, I think logic programming is what we actually need.
+- Actually we need a Clojure2Scala compiler –said a third.
 
 Ideas kept mumbling around until the PLT expert with ironic moustache said:
 
-–I think the solution is simpler and it has been in front of our eyes since 2008.
-–And what is it?
-–Objective-C. Objective-C is massively popular and it has a syntax that resembles that of Clojure: `[[MyObject alloc] init]`.
-–I don’t get it? –replied the first one.
-–We just swap Clojure parentheses for square brackets, and BAM!, millions of iOS developers can use our language.
+- I think the solution is simpler and it has been in front of our eyes since 2008.
+- And what is it?
+- Objective-C. Objective-C is massively popular and it has a syntax that resembles that of Clojure: `[[MyObject alloc] init]`.
+- I don’t get it? –replied the first one.
+- We just swap Clojure parentheses for square brackets, and BAM!, millions of iOS developers can use our language.
 
 And that’s pretty much how Clochure came to life.
 
