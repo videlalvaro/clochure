@@ -4,7 +4,7 @@
 
 We've found an elegant and practical solution to the problem: interchange parentheses with square brackets. Why?
 
-Since 2008 one programming language has seen a unprecedented growth in popularity despite it weird syntax: `Objective-C`. Why, because to create applications for the App Store you have to code in Objective-C. Over 800.000 apps in the App Store are a testimony of the popularity of this language.
+Since 2008 one programming language has seen a unprecedented growth in popularity despite its weird syntax: `Objective-C`. Why, because to create applications for the App Store you have to code in Objective-C. Over 800.000 apps in the App Store are a testimony of the popularity of this language.
 
 What does this have to do with Clochure? Well Objective-C syntax looks like this:
 
@@ -16,7 +16,7 @@ Don't you see something familiar there? Yep. We also noticed it.
 
 So now with Clochure you get all the advantages of the JVM, the elegance of Clojure and tons of Objective-C developers that can jump straight away to work in your startup code.
 
-Also to makes things easier for library maintainer we kept the `clojure` namespaces to keep BC with existing Clojure projects.
+Also to makes things easier for library maintainers we kept the `clojure` namespaces to keep BC with existing Clojure projects.
 
 ## Advantages
 
@@ -71,7 +71,7 @@ cd utils
 
 ## How do I pronounce Clochure
 
-It should be pronounced as in French: clo-chure.
+It should be pronounced as in French: _clo-chure_.
 
 ## Why, How, When? ##
 
