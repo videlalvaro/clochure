@@ -30,11 +30,21 @@ Some of the advantages of Clochure over Clojure are:
 
 TL;DR: Use Clochure
 
+## Getting Clochure
+
+Simply type:
+
+```bash
+git clone git://github.com/videlalvaro/clochure.git
+```
+
+
 ## Building Clochure
 
 Using **ant**:
 
 ```bash
+cd clochure
 ant jar -Dmaven.test.skip=true
 ```
 
