@@ -1,5 +1,7 @@
 # Clochure - A Better Clojure #
 
+**Clochure was an April Fools day project. Don't take it seriously. Instead, [learn yourself some Clojure](http://clojure-doc.org)**
+
 [Clochure](http://clochure.org) is an educated attempt to solve Clojure's number one problem and first obstacle that puts away newcomers: **parentheses**.
 
 We've found an elegant and practical solution to the problem: interchange parentheses with square brackets. Why?
